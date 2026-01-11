@@ -1,17 +1,26 @@
 from fastapi import FastAPI
-from app.core.config import settings
-from app.api.routes import router
 
-app = FastAPI(
-    title=settings.app_name,
-    debug=settings.debug
-)
+# Core routers
+from app.api.health_routes import router as health_router
 
-app.include_router(router)
+# Optional service-specific routers
+# (Add more imports here as the service grows)
+# Example:
+# from app.api.dependency_routes import router as dependency_router
 
-@app.get("/")
-def health():
-    return {
-        "status": "ok",
-        "environment": settings.app_env
-    }
+def create_app() -> FastAPI:
+    app = FastAPI(
+        title="RootLender Service",
+        version="1.0.0",
+    )
+
+    # Health (REQUIRED for wiring)
+    app.include_router(health_router)
+
+    # Service-specific routers (uncomment as needed)
+    # app.include_router(dependency_router, prefix="/dependencies", tags=["dependencies"])
+
+    return app
+
+
+app = create_app()
