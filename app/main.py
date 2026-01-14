@@ -29,13 +29,3 @@ def health():
         "environment": settings.environment,
         "status": "ok",
     }
-from app.clients.service_discovery_client import ServiceDiscoveryClient
-
-discovery = ServiceDiscoveryClient()
-
-@app.get("/_debug/discover/{service_name}")
-def debug_discover(service_name: str):
-    return {
-        "service": service_name,
-        "base_url": discovery.get_service_url(service_name),
-    }
