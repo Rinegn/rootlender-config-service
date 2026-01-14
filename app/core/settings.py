@@ -1,20 +1,22 @@
-from pydantic_settings import BaseSettings, SettingsConfigDict
+﻿from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    # Existing app configuration
-    app_env: str
-    app_name: str
-    debug: bool = False
+    # Existing required fields
+    app_name: str = "rootlender-config-service"
+    service_name: str = "rootlender-config-service"
+    app_env: str = "local"
+    environment: str = "local"
+    port: int = 8000
 
-    # Wiring / registry configuration
-    service_name: str
-    port: int
+    # Service discovery
     service_registry_url: str | None = None
 
     model_config = SettingsConfigDict(
         env_file=".env",
-        extra="ignore"
+        env_prefix="",
+        extra="ignore",
+        case_sensitive=False,
     )
 
 
